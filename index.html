@@ -3,242 +3,632 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>로시엔트 — Quelvi LoRa Tracker</title>
-<meta name="description" content="Quelvi LoRa Tracker — 군집 안전관제부터 개인 GPS 컴퓨터까지. 40명의 위치를 한 화면에서 실시간 확인.">
+<title>Quelvi LoRa Tracker — 40명의 위치를 하나의 지도에</title>
+<meta name="description" content="스마트폰 없이 40명의 위치를 하나의 지도에서 보여주고, NFC 탭 한 번으로 등록+동의+식별을 완료하고, 위치 로그로 안전 관리 기록을 자동 생성하는 디바이스.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{--white:#fff;--bg:#f7f8fa;--text:#1a1d23;--text2:#4a5060;--text3:#7a8194;--green:#1a8c5b;--green-light:#e8f5ee;--green-dark:#146b47;--blue:#2563eb;--blue-light:#eff4ff;--orange:#e8590c;--orange-light:#fff4ed;--red:#dc2626;--red-light:#fef2f2;--border:#e5e7eb;--card:#fff;--radius:14px}
-html{scroll-behavior:smooth}
-body{font-family:'Noto Sans KR',sans-serif;background:var(--white);color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased}
-.wrap{max-width:1080px;margin:0 auto;padding:0 1.5rem}
-nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:.9rem 0}
-nav .wrap{display:flex;justify-content:space-between;align-items:center}
-.logo{font-family:'Outfit',sans-serif;font-weight:800;font-size:1.2rem;color:var(--text);letter-spacing:-.02em}.logo span{color:var(--green)}
-.nav-links{display:flex;gap:1.8rem;align-items:center}
-.nav-links a{color:var(--text2);text-decoration:none;font-size:.88rem;font-weight:500;transition:color .2s}.nav-links a:hover{color:var(--green)}
-.nav-cta{background:var(--green)!important;color:var(--white)!important;padding:.5rem 1.2rem!important;border-radius:8px;font-weight:600!important;font-size:.85rem!important}
-.hero{padding:5rem 0 3rem;text-align:center}
-.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:var(--green-light);color:var(--green);font-size:.8rem;font-weight:600;padding:.4rem 1rem;border-radius:20px;margin-bottom:1.5rem}.hero-badge::before{content:'';width:6px;height:6px;background:var(--green);border-radius:50%}
-.hero h1{font-family:'Outfit','Noto Sans KR',sans-serif;font-size:clamp(2.2rem,5vw,3.2rem);font-weight:800;line-height:1.25;letter-spacing:-.03em;margin-bottom:1.2rem}.hero h1 em{font-style:normal;color:var(--green)}
-.hero-sub{font-size:1.05rem;color:var(--text2);max-width:560px;margin:0 auto 2.5rem;font-weight:400;line-height:1.8}
-.hero-cta-row{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
-.btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--green);color:var(--white);padding:.85rem 2rem;border-radius:10px;font-size:.95rem;font-weight:600;text-decoration:none;transition:background .2s,transform .15s}.btn-primary:hover{background:var(--green-dark);transform:translateY(-1px)}
-.btn-secondary{display:inline-flex;align-items:center;gap:.5rem;background:var(--white);color:var(--text);padding:.85rem 2rem;border-radius:10px;font-size:.95rem;font-weight:600;text-decoration:none;border:1.5px solid var(--border);transition:border-color .2s}.btn-secondary:hover{border-color:var(--green)}
-.hero-numbers{display:flex;justify-content:center;gap:3rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border);flex-wrap:wrap}
-.hero-num{text-align:center}.hero-num strong{font-family:'Outfit',sans-serif;font-size:1.8rem;font-weight:800;display:block}.hero-num span{font-size:.78rem;color:var(--text3)}
-.section-head{text-align:center;margin-bottom:3rem}.section-label{font-size:.78rem;font-weight:600;color:var(--green);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.6rem}
-.section-head h2{font-family:'Outfit','Noto Sans KR',sans-serif;font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:700;letter-spacing:-.02em;line-height:1.3}
-/* TWO MODES */
-.two-modes{padding:4rem 0;background:var(--bg)}
-.modes-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;max-width:800px;margin:0 auto}
-.mode-card{background:var(--card);border-radius:var(--radius);padding:2rem;border:1.5px solid var(--border);text-align:center}
-.mode-card.featured{border-color:var(--green)}
-.mode-icon{font-size:2.5rem;margin-bottom:1rem}
-.mode-card h3{font-size:1.1rem;font-weight:700;margin-bottom:.8rem}
-.mode-card ul{list-style:none;text-align:left;font-size:.88rem;color:var(--text2);line-height:2.2}
-.mode-card ul li::before{content:'✓ ';color:var(--green);font-weight:700}
+:root {
+  --bg: #FAFAF8;
+  --fg: #1A1A1A;
+  --fg2: #555;
+  --accent: #E8530E;
+  --accent2: #D14800;
+  --card: #FFFFFF;
+  --border: #E5E5E0;
+  --muted: #F2F2EE;
+  --blue: #1B6EF3;
+  --green: #1A8754;
+  --radius: 10px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--fg);
+  background: var(--bg);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(250,250,248,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px; height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+nav .logo { font-weight: 900; font-size: 18px; letter-spacing: -0.5px; }
+nav .logo span { color: var(--accent); }
+nav ul { list-style: none; display: flex; gap: 28px; font-size: 14px; font-weight: 500; }
+nav ul a:hover { color: var(--accent); }
+nav .cta-nav {
+  background: var(--fg); color: #fff; padding: 7px 16px; border-radius: 6px;
+  font-size: 13px; font-weight: 700; transition: background .2s;
+}
+nav .cta-nav:hover { background: var(--accent); }
+
+/* SECTIONS */
+section { padding: 100px 24px; max-width: 960px; margin: 0 auto; }
+.section-label {
+  font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 12px;
+}
+h1 { font-size: clamp(32px, 5vw, 52px); font-weight: 900; line-height: 1.2; letter-spacing: -1px; }
+h2 { font-size: clamp(24px, 3.5vw, 36px); font-weight: 900; line-height: 1.3; letter-spacing: -0.5px; }
+h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+p.sub { font-size: 17px; color: var(--fg2); margin-top: 16px; line-height: 1.8; }
+
+/* HERO */
+.hero { padding-top: 140px; padding-bottom: 80px; text-align: center; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero-stats {
+  display: flex; justify-content: center; gap: 40px; margin-top: 40px; flex-wrap: wrap;
+}
+.hero-stats .stat { text-align: center; }
+.hero-stats .num {
+  font-family: 'JetBrains Mono', monospace; font-size: 32px; font-weight: 700; color: var(--accent);
+}
+.hero-stats .label { font-size: 13px; color: var(--fg2); margin-top: 2px; }
+.hero-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent); color: #fff; padding: 14px 32px;
+  border-radius: 8px; font-size: 16px; font-weight: 700;
+  margin-top: 36px; transition: background .2s, transform .15s;
+  box-shadow: 0 4px 16px rgba(232,83,14,0.25);
+}
+.hero-cta:hover { background: var(--accent2); transform: translateY(-1px); }
+.hero-cta-sub {
+  display: inline-block; margin-top: 12px; font-size: 13px; color: var(--fg2);
+}
+
+/* PROBLEM */
+.problem { background: var(--fg); color: #fff; max-width: 100%; padding: 80px 24px; }
+.problem-inner { max-width: 960px; margin: 0 auto; }
+.problem .section-label { color: var(--accent); }
+.problem h2 { color: #fff; }
+.problem-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px; margin-top: 32px;
+}
+.problem-card {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius); padding: 24px;
+}
+.problem-card .icon { font-size: 28px; margin-bottom: 12px; }
+.problem-card h3 { color: #fff; font-size: 15px; }
+.problem-card p { color: rgba(255,255,255,0.65); font-size: 14px; line-height: 1.6; }
+
+/* SOLUTION */
+.solution { text-align: center; }
+.solution-flow {
+  display: flex; align-items: center; justify-content: center; gap: 16px;
+  margin-top: 40px; flex-wrap: wrap;
+}
+.solution-step {
+  background: var(--card); border: 2px solid var(--border); border-radius: var(--radius);
+  padding: 20px 24px; text-align: center; min-width: 160px; position: relative;
+}
+.solution-step.highlight { border-color: var(--accent); }
+.solution-step .step-num {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  background: var(--accent); color: #fff; width: 28px; height: 28px;
+  border-radius: 50%; font-size: 13px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.solution-step .step-icon { font-size: 32px; margin-bottom: 8px; }
+.solution-step h3 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.solution-step p { font-size: 12px; color: var(--fg2); }
+.solution-arrow { font-size: 20px; color: var(--border); }
+
 /* PRODUCT */
-.product-showcase{padding:4rem 0;background:#1a1d23}
-.product-images{display:flex;justify-content:center;gap:3rem;align-items:flex-start;flex-wrap:wrap}
-.product-images img{max-width:380px;width:100%;height:auto;border-radius:8px}
-/* SCREENS */
-.screen-detail{padding:5rem 0;background:var(--bg)}
-.screen-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:3rem}
-.screen-card{background:var(--card);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)}
-.screen-card img{width:100%;height:auto;display:block}
-.screen-info{padding:1.2rem 1.5rem}
-.screen-info h3{font-size:1rem;font-weight:700;margin-bottom:.3rem}
-.screen-info p{font-size:.85rem;color:var(--text2);line-height:1.7}
-.screen-subtitle{text-align:center;margin:2rem 0 1.5rem;font-size:.9rem;font-weight:600;color:var(--text3)}
-/* SCENARIO */
-.scenario-visual{padding:4rem 0}
-.scenario-visual img{width:100%;max-width:900px;height:auto;display:block;margin:0 auto;border-radius:var(--radius);border:1px solid var(--border)}
-/* BEFORE/AFTER */
-.scenarios{padding:5rem 0}
-.scenario-list{display:flex;flex-direction:column;gap:2rem}
-.scenario{display:grid;grid-template-columns:1fr 40px 1fr;gap:1rem;align-items:stretch}
-.scenario-before,.scenario-after{border-radius:var(--radius);padding:1.5rem 1.8rem;border:1px solid var(--border)}
-.scenario-before{background:var(--red-light);border-color:#fecaca}
-.scenario-after{background:var(--green-light);border-color:#a7f3d0}
-.scenario-tag{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.6rem}
-.scenario-before .scenario-tag{color:var(--red)}.scenario-after .scenario-tag{color:var(--green)}
-.scenario-title{font-size:.95rem;font-weight:700;margin-bottom:.4rem}
-.scenario-text{font-size:.85rem;color:var(--text2);line-height:1.7}
-.scenario-arrow{display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:var(--green);font-weight:800}
-.scenario-context{text-align:center;margin-bottom:.5rem}
-.scenario-emoji{font-size:2rem}
-.scenario-scene{font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:1rem;text-align:center}
-/* HOW */
-.how{padding:5rem 0;background:var(--bg)}
-.how-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;position:relative}
-.how-steps::before{content:'';position:absolute;top:2.8rem;left:16.5%;right:16.5%;height:2px;background:var(--border)}
-.step{text-align:center;position:relative}
-.step-num{width:56px;height:56px;background:var(--green);color:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:1.3rem;font-weight:700;margin:0 auto 1.2rem;position:relative;z-index:1;box-shadow:0 4px 12px rgba(26,140,91,.25)}
-.step h3{font-size:1rem;font-weight:700;margin-bottom:.4rem}.step p{font-size:.85rem;color:var(--text2);max-width:260px;margin:0 auto}
-/* FEATURES */
-.features{padding:5rem 0}
-.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
-.feat-card{background:var(--card);border-radius:var(--radius);padding:1.4rem 1.6rem;border:1px solid var(--border);display:flex;gap:1rem;align-items:flex-start}
-.feat-dot{width:38px;height:38px;flex-shrink:0;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
-.feat-dot.green{background:var(--green-light)}.feat-dot.blue{background:var(--blue-light)}.feat-dot.orange{background:var(--orange-light)}
-.feat-card h3{font-size:.9rem;font-weight:700;margin-bottom:.2rem}.feat-card p{font-size:.82rem;color:var(--text2)}
+.product { }
+.product-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 40px;
+}
+.product-img {
+  background: var(--fg); border-radius: var(--radius); overflow: hidden; padding: 32px;
+  display: flex; align-items: center; justify-content: center;
+}
+.product-img img { max-height: 400px; object-fit: contain; }
+.screen-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px;
+}
+.screen-item {
+  background: var(--muted); border-radius: var(--radius); padding: 16px; text-align: center;
+}
+.screen-item img { max-height: 220px; margin: 0 auto 12px; border-radius: 6px; }
+.screen-item p { font-size: 13px; color: var(--fg2); font-weight: 500; }
+
+/* REPORT */
+.report { background: var(--muted); max-width: 100%; padding: 80px 24px; }
+.report-inner { max-width: 960px; margin: 0 auto; }
+.report-preview {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 32px; margin-top: 32px;
+}
+.report-preview h3 { font-size: 16px; border-bottom: 2px solid var(--fg); padding-bottom: 8px; margin-bottom: 16px; }
+.report-row {
+  display: grid; grid-template-columns: 80px 1fr 120px 120px; gap: 8px;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px;
+}
+.report-row.header { font-weight: 700; color: var(--fg); }
+.report-row span { color: var(--fg2); }
+.report-row .alert { color: var(--accent); font-weight: 700; }
+.report-tag { font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+
+/* SCENARIOS */
+.scenarios { }
+.scenario-list { margin-top: 32px; display: flex; flex-direction: column; gap: 20px; }
+.scenario-item {
+  display: grid; grid-template-columns: 48px 1fr; gap: 16px;
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 24px;
+}
+.scenario-item .icon {
+  width: 48px; height: 48px; background: var(--muted); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; font-size: 24px;
+}
+.scenario-item h3 { font-size: 15px; margin-bottom: 4px; }
+.scenario-item p { font-size: 14px; color: var(--fg2); line-height: 1.6; }
+
+/* COMPARE */
+.compare { }
+.compare-table {
+  margin-top: 32px; width: 100%; border-collapse: collapse; font-size: 14px;
+}
+.compare-table th, .compare-table td {
+  padding: 12px 16px; text-align: center; border-bottom: 1px solid var(--border);
+}
+.compare-table th { background: var(--muted); font-weight: 700; font-size: 13px; }
+.compare-table td:first-child { text-align: left; font-weight: 600; }
+.compare-table .yes { color: var(--green); font-weight: 700; }
+.compare-table .no { color: #ccc; }
+.compare-table .highlight-col { background: rgba(232,83,14,0.04); }
+.compare-table thead th.highlight-col { background: var(--accent); color: #fff; }
+
 /* PRICING */
-.pricing{padding:5rem 0;background:var(--bg)}
-.price-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem;max-width:860px;margin:0 auto}
-.price-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:2rem 1.5rem;text-align:center}
-.price-card.featured{border-color:var(--green);background:var(--green-light)}
-.price-type{font-size:.72rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.6rem}
-.price-val{font-family:'Outfit',sans-serif;font-size:2rem;font-weight:800;color:var(--text);margin-bottom:.2rem}.price-val span{font-size:.85rem;font-weight:500;color:var(--text3)}
-.price-unit{font-size:.82rem;color:var(--text3);margin-bottom:1rem}
-.price-desc{font-size:.8rem;color:var(--text2);text-align:left;line-height:1.9}
-/* TEST */
-.test-program{padding:5rem 0}
-.test-box{background:var(--card);border:2px solid var(--green);border-radius:20px;padding:3rem;max-width:800px;margin:0 auto}
-.test-box h3{font-family:'Outfit','Noto Sans KR',sans-serif;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:.5rem}
-.test-sub{text-align:center;font-size:.95rem;color:var(--text2);margin-bottom:2rem}
-.test-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem}
-.test-item{display:flex;gap:.8rem;align-items:flex-start}
-.test-icon{width:36px;height:36px;flex-shrink:0;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;background:var(--green-light)}
-.test-item h4{font-size:.88rem;font-weight:700;margin-bottom:.15rem}.test-item p{font-size:.8rem;color:var(--text2);line-height:1.6}
-.test-steps{background:var(--bg);border-radius:12px;padding:1.5rem 2rem;margin-bottom:2rem}
-.test-steps h4{font-size:.85rem;font-weight:700;margin-bottom:.8rem}
-.test-flow{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.8rem}
-.test-flow-step{background:var(--white);border:1px solid var(--border);border-radius:6px;padding:.4rem .8rem;font-weight:500}
-.test-flow-arrow{color:var(--green);font-weight:700}
-.test-cta{text-align:center}.test-note{font-size:.78rem;color:var(--text3);margin-top:.8rem;text-align:center}
-footer{padding:2.5rem 0;border-top:1px solid var(--border)}
-footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
-.footer-left{font-size:.8rem;color:var(--text3)}.footer-left strong{color:var(--text);font-weight:600}
-@media(max-width:768px){.modes-grid{grid-template-columns:1fr}.scenario{grid-template-columns:1fr;gap:.5rem}.scenario-arrow{transform:rotate(90deg)}.how-steps{grid-template-columns:1fr}.how-steps::before{display:none}.feat-grid{grid-template-columns:1fr}.price-cards{grid-template-columns:1fr}.test-grid{grid-template-columns:1fr}.nav-links a:not(.nav-cta){display:none}.hero-numbers{gap:1.5rem}.product-images{flex-direction:column;align-items:center}.screen-grid{grid-template-columns:1fr}.test-box{padding:2rem 1.5rem}}
+.pricing { }
+.pricing-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 32px;
+}
+.price-card {
+  background: var(--card); border: 2px solid var(--border); border-radius: var(--radius);
+  padding: 28px; text-align: center;
+}
+.price-card.featured { border-color: var(--accent); }
+.price-card .price-label { font-size: 13px; font-weight: 700; color: var(--fg2); margin-bottom: 8px; }
+.price-card .price {
+  font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700;
+}
+.price-card .price-unit { font-size: 14px; color: var(--fg2); }
+.price-card .price-desc { font-size: 13px; color: var(--fg2); margin-top: 8px; line-height: 1.6; }
+.price-note { font-size: 13px; color: var(--fg2); margin-top: 16px; text-align: center; }
+
+/* CTA / POC */
+.poc { background: var(--fg); color: #fff; max-width: 100%; padding: 80px 24px; text-align: center; }
+.poc-inner { max-width: 720px; margin: 0 auto; }
+.poc .section-label { color: var(--accent); }
+.poc h2 { color: #fff; }
+.poc p { color: rgba(255,255,255,0.7); margin-top: 12px; font-size: 15px; }
+.poc-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent); color: #fff; padding: 16px 40px;
+  border-radius: 8px; font-size: 17px; font-weight: 700;
+  margin-top: 32px; transition: background .2s, transform .15s;
+  box-shadow: 0 4px 24px rgba(232,83,14,0.3);
+}
+.poc-cta:hover { background: #fff; color: var(--accent); transform: translateY(-2px); }
+.poc-details {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 20px; margin-top: 40px; text-align: center;
+}
+.poc-detail .num { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 700; color: var(--accent); }
+.poc-detail .label { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+
+/* ABOUT */
+.about { text-align: center; }
+.about-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 32px; margin-top: 24px; text-align: left;
+}
+.about-card p { font-size: 14px; color: var(--fg2); line-height: 1.8; }
+
+/* FOOTER */
+footer {
+  padding: 40px 24px; text-align: center; font-size: 13px; color: var(--fg2);
+  border-top: 1px solid var(--border);
+}
+
+/* MID CTA */
+.mid-cta {
+  text-align: center; padding: 40px 24px;
+}
+.mid-cta a {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--fg); color: #fff; padding: 12px 28px;
+  border-radius: 8px; font-size: 15px; font-weight: 700;
+  transition: background .2s;
+}
+.mid-cta a:hover { background: var(--accent); }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  nav ul { display: none; }
+  .product-grid { grid-template-columns: 1fr; }
+  .screen-grid { grid-template-columns: 1fr; }
+  .pricing-grid { grid-template-columns: 1fr; }
+  .report-row { grid-template-columns: 1fr 1fr; }
+  .solution-flow { flex-direction: column; }
+  .solution-arrow { transform: rotate(90deg); }
+  section { padding: 60px 20px; }
+}
 </style>
 </head>
 <body>
-<nav><div class="wrap"><div class="logo">loci<span>ent</span></div><div class="nav-links"><a href="#product">제품</a><a href="#scenarios">사용 사례</a><a href="#pricing">가격</a><a href="#test" class="nav-cta">무료 테스트 신청</a></div></div></nav>
 
-<section class="hero"><div class="wrap">
-<div class="hero-badge">Quelvi LoRa Tracker</div>
-<h1>우리 팀 전원,<br>지금 <em>어디에 있는지</em><br>한눈에.</h1>
-<p class="hero-sub">군집 안전관제부터 개인 GPS 컴퓨터까지.<br>하나의 디바이스로 두 가지 모드를 지원합니다.<br>인터넷 없이, 산속에서도.</p>
-<div class="hero-cta-row"><a href="#test" class="btn-primary">무료 현장 테스트 신청 →</a><a href="#how" class="btn-secondary">작동 방식 보기</a></div>
-<div class="hero-numbers">
-<div class="hero-num"><strong>40명</strong><span>리더 1대로 동시 확인</span></div>
-<div class="hero-num"><strong>10초</strong><span>태그 전원 ON → 자동 등록</span></div>
-<div class="hero-num"><strong>96시간</strong><span>태그 배터리</span></div>
-<div class="hero-num"><strong>1초</strong><span>SOS 경보 전달</span></div>
-</div>
-</div></section>
+<!-- NAV -->
+<nav>
+  <div class="logo"><span>locient</span></div>
+  <ul>
+    <li><a href="#problem">왜 필요한가</a></li>
+    <li><a href="#product">제품</a></li>
+    <li><a href="#scenarios">사용 사례</a></li>
+    <li><a href="#pricing">가격</a></li>
+  </ul>
+  <a href="https://forms.gle/YkwjUg9hfMsC7y2z6" class="cta-nav" target="_blank">무료 테스트 신청</a>
+</nav>
 
-<section class="two-modes"><div class="wrap">
-<div class="section-head"><div class="section-label">두 가지 모드</div><h2>하나의 디바이스, 두 가지 용도</h2></div>
-<div class="modes-grid">
-<div class="mode-card featured"><div class="mode-icon">👥</div><h3>군집 모드</h3><ul><li>팀원 40명 실시간 위치 관제</li><li>경로 이탈 · 낙차 자동 경보</li><li>SOS 1초 내 전달</li><li>리더-리더 연동 최대 400명</li></ul></div>
-<div class="mode-card"><div class="mode-icon">🚴</div><h3>단독 모드</h3><ul><li>속도 · 고도 · 이동 거리 표시</li><li>경로 자동 기록</li><li>출발지 복귀 내비게이션</li><li>자전거/등산 GPS 컴퓨터</li></ul></div>
-</div>
-</div></section>
+<!-- HERO -->
+<section class="hero" id="top">
+  <p class="section-label">Quelvi LoRa Tracker</p>
+  <h1>40명의 위치를<br>하나의 지도에.<br><em>안전 기록까지 자동으로.</em></h1>
+  <p class="sub">스마트폰 없이, 인터넷 없이, 앱 설치 없이.<br>태그를 탭하면 2초에 등록. 활동이 끝나면 PDF 보고서가 남습니다.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="num">2초</div><div class="label">NFC 탭 등록</div></div>
+    <div class="stat"><div class="num">40명</div><div class="label">리더 1대로 관제</div></div>
+    <div class="stat"><div class="num">96h</div><div class="label">태그 배터리</div></div>
+    <div class="stat"><div class="num">1초</div><div class="label">SOS 전달</div></div>
+  </div>
+  <a href="https://forms.gle/YkwjUg9hfMsC7y2z6" class="hero-cta" target="_blank">무료 현장 테스트 신청 →</a>
+  <br><span class="hero-cta-sub">장비 일체 무상 제공 · 세팅·회수 포함 · 선착순 3곳</span>
+</section>
 
-<section class="product-showcase" id="product"><div class="wrap">
-<div class="product-images">
-<img src="leader_device.png" alt="Quelvi LoRa Tracker Leader">
-<img src="tag_device.png" alt="Quelvi LoRa Tracker Tag">
-</div>
-</div></section>
+<!-- PROBLEM -->
+<section class="problem" id="problem">
+  <div class="problem-inner">
+    <p class="section-label">왜 필요한가</p>
+    <h2>스마트폰으로 40명을 관리할 수 없는<br>4가지 이유</h2>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="icon">📱</div>
+        <h3>스마트폰이 없다</h3>
+        <p>초등 저학년은 미보유. 보유 학생도 데이터 부족, 부모의 앱 설치 제약.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon">⏱️</div>
+        <h3>40명 앱 설치 = 1시간</h3>
+        <p>앱 다운로드→계정→위치 권한→동의. 40명이면 활동 시간보다 설정 시간이 길다.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon">🔋</div>
+        <h3>배터리가 죽는다</h3>
+        <p>GPS 앱은 배터리를 빨아먹는다. 중고생은 GPS를 끈다. 4시간 후 절반이 오프라인.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon">👴</div>
+        <h3>어르신은 앱을 못 깔아</h3>
+        <p>단체 관광·복지시설. 앱 설치를 요구하는 순간 반이 포기한다.</p>
+      </div>
+    </div>
+    <p style="color:rgba(255,255,255,0.5); font-size:14px; margin-top:24px; text-align:center;">
+      2025년 학교안전법 개정 이후, 서울 초등학교 현장체험학습 실시율이 98.8%에서 51.1%로 급감.<br>
+      교사 면책에 "안전조치 이행 증명"이 필수화되었으나 — 물리적으로 기록할 수단이 없다.
+    </p>
+  </div>
+</section>
 
-<section class="screen-detail"><div class="wrap">
-<div class="section-head"><div class="section-label">실제 화면</div><h2>E-ink에 이렇게 표시됩니다</h2></div>
-<div class="screen-subtitle">— 군집 모드 —</div>
-<div class="screen-grid">
-<div class="screen-card"><img src="leader_screen.png" alt="리더 화면 — 군집 모드"><div class="screen-info"><h3>리더 — 팀원 전원의 위치</h3><p>지도 위에 태그 착용자(T1~T5)의 GPS 위치가 실시간 갱신됩니다. 경로를 이탈한 T3에 대한 경보가 하단에 즉시 표시됩니다.</p></div></div>
-<div class="screen-card"><img src="tag_screen.png" alt="태그 화면 — 리더 경로"><div class="screen-info"><h3>태그 — 리더가 어디에 있는지</h3><p>리더의 실제 이동 경로가 선으로 표시되고, 나와 리더 사이의 거리(320m)가 큰 숫자로 보입니다.</p></div></div>
-</div>
-<div class="screen-subtitle">— 단독 모드 —</div>
-<div class="screen-grid">
-<div class="screen-card"><img src="solo_dashboard.png" alt="리더 화면 — 라이딩 대시보드"><div class="screen-info"><h3>라이딩 대시보드</h3><p>현재 속도, 이동 거리, 시간, 고도, 누적 상승/하강을 한 화면에. 하단에 이동 경로와 고도 프로필이 표시됩니다.</p></div></div>
-<div class="screen-card"><img src="solo_return.png" alt="리더 화면 — 출발지 복귀"><div class="screen-info"><h3>출발지 복귀</h3><p>나침반으로 출발지 방향을 가리키고, 직선 거리를 큰 숫자로 표시. 하단 지도에 내가 온 경로와 출발지가 보입니다.</p></div></div>
-</div>
-</div></section>
+<!-- SOLUTION -->
+<section class="solution" id="solution">
+  <p class="section-label">어떻게 해결하는가</p>
+  <h2>NFC 탭 2초 등록. 위치 로그. PDF 보고서. 끝.</h2>
+  <p class="sub">참가자는 아무것도 안 합니다. 태그 받으면 끝.<br>인솔자만 스마트폰으로 태그를 탭하면 됩니다.</p>
+  <div class="solution-flow">
+    <div class="solution-step highlight">
+      <div class="step-num">1</div>
+      <div class="step-icon">📲</div>
+      <h3>NFC 탭 등록</h3>
+      <p>태그를 폰으로 탭<br>이름+동의 2초 완료</p>
+    </div>
+    <div class="solution-arrow">→</div>
+    <div class="solution-step">
+      <div class="step-num">2</div>
+      <div class="step-icon">🗺️</div>
+      <h3>지도에서 관제</h3>
+      <p>리더 E-ink에<br>전원 위치 실시간</p>
+    </div>
+    <div class="solution-arrow">→</div>
+    <div class="solution-step">
+      <div class="step-num">3</div>
+      <div class="step-icon">⚠️</div>
+      <h3>이탈·낙차 경보</h3>
+      <p>벗어나면 자동 알림<br>SOS 1초 전달</p>
+    </div>
+    <div class="solution-arrow">→</div>
+    <div class="solution-step highlight">
+      <div class="step-num">4</div>
+      <div class="step-icon">📄</div>
+      <h3>보고서 자동 생성</h3>
+      <p>위치 로그+이름 결합<br>PDF 안전 관리 기록</p>
+    </div>
+  </div>
+</section>
 
-<section class="scenario-visual"><div class="wrap">
-<div class="section-head"><div class="section-label">이렇게 씁니다</div><h2>산행 중 리더 1대로 전원 위치 확인</h2></div>
-<img src="scenario_diagram.png" alt="산행 조감도">
-</div></section>
+<!-- PRODUCT -->
+<section class="product" id="product">
+  <p class="section-label">제품</p>
+  <h2>리더 1대 + 태그 30개.<br>이게 전부입니다.</h2>
+  <div class="product-grid">
+    <div class="product-img">
+      <img src="leader_device.png" alt="Quelvi LoRa Tracker Leader" loading="lazy">
+    </div>
+    <div>
+      <h3>리더 (인솔자용)</h3>
+      <p class="sub" style="margin-top:8px;">4.2인치 E-ink에 오프라인 벡터 지도.<br>태그 전원의 위치를 실시간 표시.<br>135×72mm, 148g, IP67 방수.<br>배터리 72시간.<br><br>태그 없이 <strong>개인 GPS 컴퓨터</strong>로도 사용 가능.<br>속도·고도·경로·출발지 복귀.</p>
+    </div>
+  </div>
+  <div class="product-grid" style="margin-top:24px;">
+    <div>
+      <h3>태그 (참가자용)</h3>
+      <p class="sub" style="margin-top:8px;">1.0인치 E-ink에 리더 방향+거리 표시.<br>78×46mm, 48g, IP67 방수.<br>배터리 96시간. 원버튼 조작.<br>벨트 클립 착탈. SOS 측면 버튼.<br><br><strong>뒷면 NFC 스티커</strong>로 스마트폰 탭 등록.</p>
+    </div>
+    <div class="product-img">
+      <img src="tag_device.png" alt="Quelvi LoRa Tracker Tag" loading="lazy">
+    </div>
+  </div>
 
-<section class="scenarios" id="scenarios"><div class="wrap">
-<div class="section-head"><div class="section-label">이런 경험, 있으셨죠?</div><h2>사람이 모이면, 누군가는 안 보입니다</h2></div>
-<div class="scenario-list">
-<div><div class="scenario-context"><div class="scenario-emoji">🏫</div></div><div class="scenario-scene">수학여행 자유시간 종료, 학생 3명 미집합</div><div class="scenario"><div class="scenario-before"><div class="scenario-tag">지금은</div><div class="scenario-title">선생님 5명이 나눠서 수색</div><div class="scenario-text">전화는 안 받고, 어디로 갔는지 모릅니다. 30분이 지나도 못 찾으면 경찰에 연락해야 할지 고민합니다.</div></div><div class="scenario-arrow">→</div><div class="scenario-after"><div class="scenario-tag">Quelvi가 있으면</div><div class="scenario-title">리더 화면에서 5초 만에 확인</div><div class="scenario-text">리더 지도에서 "T3 외 2명, 기념품 매장 부근 200m" 확인. 선생님 1명만 데리러 갑니다. <strong>5분 해결.</strong></div></div></div></div>
-<div><div class="scenario-context"><div class="scenario-emoji">⛰️</div></div><div class="scenario-scene">등산 20명 산행, 회원 1명이 1시간째 안 옴</div><div class="scenario"><div class="scenario-before"><div class="scenario-tag">지금은</div><div class="scenario-title">무전기 불러도 응답 없음</div><div class="scenario-text">되돌아가야 할지, 기다려야 할지 모릅니다. 산에서는 스마트폰 GPS 공유도 안 됩니다.</div></div><div class="scenario-arrow">→</div><div class="scenario-after"><div class="scenario-tag">Quelvi가 있으면</div><div class="scenario-title">지도에서 정확한 위치 확인</div><div class="scenario-text">리더 화면에서 "T7, 갈림길 분기점 300m 후방" 확인. 경로에 있으니 기다리기로 판단. <strong>불필요한 수색 없음.</strong></div></div></div></div>
-<div><div class="scenario-context"><div class="scenario-emoji">🚴</div></div><div class="scenario-scene">자전거 라이딩, 뒤쪽 라이더 낙차</div><div class="scenario"><div class="scenario-before"><div class="scenario-tag">지금은</div><div class="scenario-title">앞에서는 모름, 골든타임 경과</div><div class="scenario-text">뒤쪽에서 넘어졌는데 앞 그룹은 계속 달립니다. 뒤처진 걸 눈치챈 건 10분 뒤.</div></div><div class="scenario-arrow">→</div><div class="scenario-after"><div class="scenario-tag">Quelvi가 있으면</div><div class="scenario-title">넘어진 즉시 자동 경보</div><div class="scenario-text">태그 센서가 넘어짐 감지 → 리더에 1초 내 경보 + 정확한 위치. <strong>자동으로 알림.</strong></div></div></div></div>
-<div><div class="scenario-context"><div class="scenario-emoji">🏔️</div></div><div class="scenario-scene">처음 가는 산, 하산길을 모를 때</div><div class="scenario"><div class="scenario-before"><div class="scenario-tag">지금은</div><div class="scenario-title">올라올 때 찍어둔 사진 기억에 의존</div><div class="scenario-text">갈림길에서 50:50 도박. 네이버 지도는 산에서 안 됩니다. 해 지기 전에 내려가야 하는데.</div></div><div class="scenario-arrow">→</div><div class="scenario-after"><div class="scenario-tag">Quelvi가 있으면</div><div class="scenario-title">올라온 경로가 자동 기록됨</div><div class="scenario-text">화면에 "출발지 방향 ← 2.3km" 표시. 갈림길에서 내 경로를 따라가면 됩니다. <strong>인터넷 없이.</strong></div></div></div></div>
-</div>
-</div></section>
+  <h3 style="margin-top:48px; text-align:center;">E-ink 실제 화면</h3>
+  <div class="screen-grid">
+    <div class="screen-item">
+      <img src="leader_screen.png" alt="군집 모드" loading="lazy">
+      <p>군집 모드 — 팀원 전원 위치</p>
+    </div>
+    <div class="screen-item">
+      <img src="tag_screen.png" alt="태그 화면" loading="lazy">
+      <p>태그 — 리더 방향 + 320m</p>
+    </div>
+    <div class="screen-item">
+      <img src="solo_dashboard.png" alt="라이딩" loading="lazy">
+      <p>단독 모드 — 라이딩 대시보드</p>
+    </div>
+    <div class="screen-item">
+      <img src="solo_return.png" alt="복귀" loading="lazy">
+      <p>단독 모드 — 출발지 복귀</p>
+    </div>
+  </div>
+</section>
 
-<section class="how" id="how"><div class="wrap">
-<div class="section-head"><div class="section-label">작동 방식</div><h2>복잡한 설정 없이, 3단계면 끝</h2></div>
-<div class="how-steps">
-<div class="step"><div class="step-num">1</div><h3>태그를 나눠주세요</h3><p>참가자에게 태그를 건네고 전원만 켜면 됩니다. 리더 근처에서 자동 등록.</p></div>
-<div class="step"><div class="step-num">2</div><h3>리더에서 확인하세요</h3><p>지도 위에 팀원 전원의 위치가 점으로 표시됩니다. 인터넷 없이 작동합니다.</p></div>
-<div class="step"><div class="step-num">3</div><h3>경보가 알려줍니다</h3><p>경로 이탈, 넘어짐, SOS — 리더가 진동과 소리로 즉시 알려줍니다.</p></div>
-</div>
-</div></section>
+<!-- REPORT -->
+<section class="report" id="report">
+  <div class="report-inner">
+    <p class="section-label">안전 관리 기록</p>
+    <h2>활동이 끝나면, 보고서가 남습니다</h2>
+    <p class="sub">10초 간격 위치 로그가 NFC 등록 정보와 자동 결합되어 PDF로 생성됩니다.<br>
+    산악 가이드는 보험사에, 수련원은 교육청에, 대회는 결과 보고서로 제출할 수 있습니다.</p>
+    <div class="report-preview">
+      <h3>📄 Quelvi 안전 관리 기록 — 2026.11.15 북한산 산행</h3>
+      <div class="report-row header">
+        <span>태그</span><span>참가자</span><span>이탈 경보</span><span>상태</span>
+      </div>
+      <div class="report-row">
+        <span class="report-tag">T01</span><span>김철수</span><span>—</span><span style="color:var(--green)">정상</span>
+      </div>
+      <div class="report-row">
+        <span class="report-tag">T02</span><span>이영희</span><span>—</span><span style="color:var(--green)">정상</span>
+      </div>
+      <div class="report-row">
+        <span class="report-tag">T03</span><span>박민수</span><span class="alert">15:30 이탈 → 15:32 복귀</span><span style="color:var(--green)">복귀 완료</span>
+      </div>
+      <div class="report-row">
+        <span class="report-tag">T04</span><span>정수진</span><span>—</span><span style="color:var(--green)">정상</span>
+      </div>
+      <p style="font-size:12px; color:var(--fg2); margin-top:16px; text-align:right;">
+        총 참가자: 20명 | 이탈 경보: 1건 | 활동 시간: 14:00~17:30 | 생성일시: 2026-11-15 17:35
+      </p>
+    </div>
+  </div>
+</section>
 
-<section class="features"><div class="wrap">
-<div class="section-head"><div class="section-label">주요 기능</div><h2>관리자가 알아야 할 것만</h2></div>
-<div class="feat-grid">
-<div class="feat-card"><div class="feat-dot green">📍</div><div><h3>실시간 위치 추적</h3><p>10초마다 전원의 GPS 위치가 지도 위에 갱신됩니다.</p></div></div>
-<div class="feat-card"><div class="feat-dot orange">⚠️</div><div><h3>이탈 자동 경보</h3><p>경로나 구역을 벗어나면 리더에 자동 알림.</p></div></div>
-<div class="feat-card"><div class="feat-dot orange">🆘</div><div><h3>SOS 긴급 호출</h3><p>측면 버튼 3초 장누르기로 1초 내 리더에 위치 전달.</p></div></div>
-<div class="feat-card"><div class="feat-dot blue">🤸</div><div><h3>낙차 자동 감지</h3><p>넘어짐을 센서가 감지, SOS 없이도 자동 경보.</p></div></div>
-<div class="feat-card"><div class="feat-dot green">📡</div><div><h3>인터넷 불필요</h3><p>자체 무선통신. 산속, 계곡, 섬에서도 작동. 통신비 없음.</p></div></div>
-<div class="feat-card"><div class="feat-dot blue">👥</div><div><h3>대규모 연동</h3><p>리더 여러 대 연결 → 총괄 리더 1대에서 최대 400명 통합 관제.</p></div></div>
-<div class="feat-card"><div class="feat-dot green">🚴</div><div><h3>속도 · 고도 · 경로 기록</h3><p>단독 모드에서 자전거 컴퓨터/산악 GPS로 활용. 추가 비용 없음.</p></div></div>
-<div class="feat-card"><div class="feat-dot blue">🔙</div><div><h3>출발지 복귀</h3><p>올라온 경로를 자동 기록, 방향과 거리를 안내하여 출발지로 복귀.</p></div></div>
+<!-- MID CTA -->
+<div class="mid-cta">
+  <a href="https://forms.gle/YkwjUg9hfMsC7y2z6" target="_blank">무료 현장 테스트로 직접 확인하기 →</a>
 </div>
-</div></section>
 
-<section class="pricing" id="pricing"><div class="wrap">
-<div class="section-head"><div class="section-label">가격</div><h2>구매하거나, 빌리거나, 혼자 쓰거나</h2></div>
-<div class="price-cards">
-<div class="price-card"><div class="price-type">구매 세트</div><div class="price-val">90<span>만원~</span></div><div class="price-unit">리더 1 + 태그 5</div><div class="price-desc">· 리더1+태그10: 150만원<br>· 리더2+태그20: 280만원<br>· 월정액·통신비 없음</div></div>
-<div class="price-card featured"><div class="price-type">렌탈</div><div class="price-val">5<span>만원~/일</span></div><div class="price-unit">리더 1 + 태그 5</div><div class="price-desc">· 리더1+태그10: 8만원/일<br>· 세팅·회수 포함<br>· 무전기 대여 수준 비용</div></div>
-<div class="price-card"><div class="price-type">개인 단품</div><div class="price-val">35<span>만원</span></div><div class="price-unit">리더 1대</div><div class="price-desc">· 자전거/등산 GPS 컴퓨터<br>· 속도·고도·경로·복귀<br>· 향후 태그 추가 가능</div></div>
-</div>
-</div></section>
+<!-- SCENARIOS -->
+<section class="scenarios" id="scenarios">
+  <p class="section-label">사용 사례</p>
+  <h2>이런 현장에서 씁니다</h2>
+  <div class="scenario-list">
+    <div class="scenario-item">
+      <div class="icon">⛰️</div>
+      <div>
+        <h3>산악 가이드 — 20명 산행</h3>
+        <p>태그 NFC 탭으로 40초에 전원 등록. 선두에서 리더로 뒤처진 참가자 실시간 확인. 숲속은 태그 릴레이로 4km 커버. 하산 후 위치 로그→PDF 안전 기록 자동 생성.</p>
+      </div>
+    </div>
+    <div class="scenario-item">
+      <div class="icon">🚴</div>
+      <div>
+        <h3>자전거 대회 — 40명 코스 모니터링</h3>
+        <p>운영 본부 리더로 참가자 전원 코스 진행 확인. 낙차 감지 시 SOS 1초 전달 + 정확한 위치. 대회 후 결과 보고서 자동 생성.</p>
+      </div>
+    </div>
+    <div class="scenario-item">
+      <div class="icon">🏕️</div>
+      <div>
+        <h3>수련원 야외 활동 — 30명 오리엔티어링</h3>
+        <p>원장이 태그 배포하며 NFC 탭(30명 1분). 숲속 이탈 시 자동 경보. PDF 안전관리 보고서→교육청 제출·교사 면책 소명 자료.</p>
+      </div>
+    </div>
+    <div class="scenario-item">
+      <div class="icon">🧓</div>
+      <div>
+        <h3>치매 관제 — 주간보호 시설 야외 나들이</h3>
+        <p>어르신에게 태그를 클립으로 부착. 앱 설치·조작 불필요. 시설 반경을 벗어나면 즉시 경보. 위치 기록이 자동으로 남아 보호자 보고에 활용.</p>
+      </div>
+    </div>
+    <div class="scenario-item">
+      <div class="icon">🥾</div>
+      <div>
+        <h3>개인 등산/자전거 — 리더 단독 모드</h3>
+        <p>태그 없이 리더만 사용. 속도·고도·경로 기록 + 출발지 복귀 내비. 인터넷 없이 산에서도 작동. 별도 기기 없이 GPS 컴퓨터로 전환.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-<section class="test-program" id="test"><div class="wrap">
-<div class="test-box">
-<h3>무료 현장 테스트 프로그램</h3>
-<p class="test-sub">실제 행사에서 직접 써보시고, 사용 소감만 알려주세요.</p>
-<div class="test-grid">
-<div class="test-item"><div class="test-icon">📦</div><div><h4>제공 장비</h4><p>리더 2대 + 태그 6~10대<br>(세트 시가 150만원 상당)</p></div></div>
-<div class="test-item"><div class="test-icon">📅</div><div><h4>기간</h4><p>기존 행사 일정에 맞춰 1~2회<br>2026년 11월 ~ 2027년 1월</p></div></div>
-<div class="test-item"><div class="test-icon">💰</div><div><h4>비용</h4><p>전액 무상<br>장비 운송·세팅·회수 포함</p></div></div>
-<div class="test-item"><div class="test-icon">🔧</div><div><h4>파손·분실</h4><p>정상 사용 중 파손은 당사 부담<br>고의·중과실 시에만 실비 청구</p></div></div>
-</div>
-<div class="test-steps"><h4>진행 절차</h4><div class="test-flow">
-<span class="test-flow-step">① 아래 폼 작성 (30초)</span><span class="test-flow-arrow">→</span>
-<span class="test-flow-step">② 일정 조율</span><span class="test-flow-arrow">→</span>
-<span class="test-flow-step">③ 장비 배송</span><span class="test-flow-arrow">→</span>
-<span class="test-flow-step">④ 현장 테스트</span><span class="test-flow-arrow">→</span>
-<span class="test-flow-step">⑤ 사용 소감 피드백</span>
-</div></div>
-<div class="test-cta">
-<a href="https://forms.gle/YkwjUg9hfMsC7y2z6" target="_blank" class="btn-primary" style="font-size:1.05rem;padding:1rem 2.5rem">무료 테스트 참여 신청 (30초) →</a>
-<p class="test-note">신청서는 법적 구속력이 없으며, 구체적 일정은 별도 협의합니다.<br>문의: <span id="em"></span></p>
-</div>
-</div>
-</div></section>
+<!-- COMPARE -->
+<section class="compare" id="compare">
+  <p class="section-label">왜 Quelvi인가</p>
+  <h2>기존 방법과 비교</h2>
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>스마트폰 앱</th>
+        <th>무전기</th>
+        <th>Garmin inReach</th>
+        <th class="highlight-col">Quelvi</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>실시간 위치 지도</td>
+        <td class="yes">○</td>
+        <td class="no">✕</td>
+        <td class="no">✕</td>
+        <td class="highlight-col yes">○</td>
+      </tr>
+      <tr>
+        <td>인터넷 불필요</td>
+        <td class="no">✕</td>
+        <td class="yes">○</td>
+        <td class="yes">○</td>
+        <td class="highlight-col yes">○</td>
+      </tr>
+      <tr>
+        <td>40명 동시 관제</td>
+        <td class="no">✕</td>
+        <td class="no">✕</td>
+        <td class="no">✕</td>
+        <td class="highlight-col yes">○</td>
+      </tr>
+      <tr>
+        <td>초등생·어르신 사용</td>
+        <td class="no">✕</td>
+        <td class="yes">○</td>
+        <td class="no">✕</td>
+        <td class="highlight-col yes">○</td>
+      </tr>
+      <tr>
+        <td>위치 로그 보고서</td>
+        <td class="no">✕</td>
+        <td class="no">✕</td>
+        <td class="no">✕</td>
+        <td class="highlight-col yes">○</td>
+      </tr>
+      <tr>
+        <td>이탈·낙차 자동 경보</td>
+        <td class="no">✕</td>
+        <td class="no">✕</td>
+        <td class="no">✕</td>
+        <td class="highlight-col yes">○</td>
+      </tr>
+      <tr>
+        <td>비용 (세트/일)</td>
+        <td>무료(통신비별도)</td>
+        <td>~33,000원</td>
+        <td>~90,000원+월정액</td>
+        <td class="highlight-col" style="font-weight:700;">50,000원</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-size:13px; color:var(--fg2); margin-top:12px; text-align:center;">
+    LoRa P2P + 오프라인 GIS + 군집 관제 + 위치 로그 보고서를 결합한 완제품은 국내외에 없습니다.
+  </p>
+</section>
 
-<footer><div class="wrap">
-<div class="footer-left"><strong>로시엔트 Locient</strong> &nbsp;·&nbsp; 서울<br>&copy; 2026 Locient. All rights reserved.</div>
-<div class="footer-right"><span id="em2"></span></div>
-</div></footer>
-<script>
-(function(){var u='hel'+'lo';var d='loc'+'ient.com';var e=u+'@'+d;
-var a1=document.getElementById('em');if(a1){var l=document.createElement('a');l.href='mai'+'lto:'+e;l.style.color='#1a8c5b';l.style.fontWeight='600';l.textContent=e;a1.appendChild(l);}
-var a2=document.getElementById('em2');if(a2){var l2=document.createElement('a');l2.href='mai'+'lto:'+e;l2.style.color='#1a8c5b';l2.style.textDecoration='none';l2.style.fontWeight='500';l2.textContent=e;a2.appendChild(l2);}
-})();
-</script>
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <p class="section-label">가격</p>
+  <h2>구매하거나, 빌리거나, 혼자 쓰거나</h2>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-label">렌탈 (세트/일)</div>
+      <div class="price">50,000<span class="price-unit">원~</span></div>
+      <div class="price-desc">리더1+태그5 기준<br>세팅·회수·보고서 포함<br>무전기 대여(33,000원/일) 수준으로<br>GPS 추적+지도+경보+기록까지</div>
+    </div>
+    <div class="price-card featured">
+      <div class="price-label">렌탈 (월정액)</div>
+      <div class="price">200,000<span class="price-unit">원/월~</span></div>
+      <div class="price-desc">리더1+태그5 기준 (20일+)<br>반복 사용 시 가장 경제적<br>안전 관리 기록 서비스 포함<br><strong>무전기 월 66만원 대비 70% 절감</strong></div>
+    </div>
+    <div class="price-card">
+      <div class="price-label">개인 단품 (리더1)</div>
+      <div class="price">350,000<span class="price-unit">원</span></div>
+      <div class="price-desc">자전거/등산 GPS 컴퓨터<br>속도·고도·경로·복귀 내비<br>월정액·통신비 없음<br>향후 태그 추가 가능</div>
+    </div>
+  </div>
+  <p class="price-note">B2B 세트 구매: 리더1+태그5 = 90만원 / 리더1+태그10 = 150만원 / 리더2+태그20 = 280만원</p>
+</section>
+
+<!-- POC -->
+<section class="poc" id="test">
+  <div class="poc-inner">
+    <p class="section-label">무료 현장 테스트</p>
+    <h2>직접 써보고 판단하세요</h2>
+    <p>실제 현장에서 리더 2대 + 태그 6~10대를 무료로 제공합니다.<br>
+    장비 운송·세팅·회수 전부 포함. 사용 소감만 알려주세요.</p>
+    <div class="poc-details">
+      <div class="poc-detail"><div class="num">150만원</div><div class="label">장비 시가 (무상)</div></div>
+      <div class="poc-detail"><div class="num">1~2회</div><div class="label">기존 행사 일정에 맞춤</div></div>
+      <div class="poc-detail"><div class="num">3곳</div><div class="label">선착순 모집</div></div>
+      <div class="poc-detail"><div class="num">0원</div><div class="label">파손 시 당사 부담</div></div>
+    </div>
+    <a href="https://forms.gle/YkwjUg9hfMsC7y2z6" class="poc-cta" target="_blank">무료 테스트 참여 신청 (30초) →</a>
+    <p style="font-size:12px; color:rgba(255,255,255,0.4); margin-top:16px;">
+      신청서는 법적 구속력이 없으며, 구체적 일정은 별도 협의합니다.
+    </p>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <p class="section-label">만드는 사람</p>
+  <h2>로시엔트 Locient</h2>
+  <div class="about-card">
+    <p>
+      <strong>김현길</strong> — S/W 개발 18년+, 정보통신공학.<br>
+      GIS/LBS 관제 솔루션으로 커리어를 시작. 전국 900개 센서 노드 데이터 수집 서버 1인 설계.<br>
+      10개월간 퇴근 후 Quelvi GIS 엔진(C++17, TC 59종 PASS)을 단독 개발.<br>
+      이 엔진을 E-ink 디바이스에 넣어 LoRa P2P와 결합하는 것이 이 프로젝트의 핵심입니다.<br><br>
+      선정 여부와 무관하게 자비로 PCB를 발주하고, 제품을 만들고 있습니다.
+    </p>
+  </div>
+  <p style="font-size:14px; color:var(--fg2); margin-top:16px;">
+    문의: <strong>ceo</strong> [at] <strong>locient.com</strong>
+  </p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <strong>로시엔트 Locient</strong> · 서울<br>
+  © 2026 Locient. All rights reserved.
+</footer>
+
 </body>
 </html>
